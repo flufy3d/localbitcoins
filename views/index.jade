@@ -1,0 +1,69 @@
+html
+  head
+    title!= title
+    style
+      include style.css
+  body
+    script
+      include refresh.js
+    h2 LocalBitcoins 成本收益表
+    h4 冷却数 #{count_down}
+    h4 汇率 #{message.usd_in_cny}
+    h4 买一价#{message.bid_cny}   卖一价#{message.ask_cny}
+
+
+    #seller
+      table
+        thead
+            tr
+                th 卖家
+                th 方式
+                th 价格
+                th 实价格
+                th 利润率
+                th Limits
+
+        tbody
+          each ads in message.lbc_buy_list
+            tr
+              td 
+                span!=ads.username
+              td 
+                span!=ads.method
+              td 
+                span!=ads.price + ' ' + ads.currency
+              td 
+                span!=ads.rprice + ' ' + ads.currency
+              td 
+                span!=ads.profit
+              td 
+                span!=ads.range
+
+
+    #buyer
+      table
+        thead
+            tr
+                th 买家
+                th 方式
+                th 价格
+                th 实价格
+                th 利润率
+                th Limits
+
+        tbody
+          each ads in message.lbc_sell_list
+            tr
+              td 
+                span!=ads.username
+              td 
+                span!=ads.method
+              td 
+                span!=ads.price + ' ' + ads.currency
+              td 
+                span!=ads.rprice + ' ' + ads.currency
+              td 
+                span!=ads.profit
+              td 
+                span!=ads.range
+         
