@@ -9,6 +9,7 @@ result.lbc_buy_list = [];
 result.lbc_sell_list = [];
 update_interval = 10000;
 var count_down = 100;
+var show_count = 6;
 
 app.set('view engine', 'jade')
 
@@ -87,18 +88,29 @@ function update_lbc_buy() {
 
         result.lbc_buy_list = [];
 
-        for (var i = 0; i < Math.min(6,ad_list.length); i++) {
+        _prev_name_list = {};
+
+        _count = 0;
+        for (var i = 0; i < ad_list.length; i++) {
+            
             ads = ad_list[i].data;
             item = {};
             item.username = ads.profile.username;
+
             item.method = ads.online_provider;
             item.price = ads.temp_price;
             item.rprice = (ads.temp_price*0.99).toFixed(2);
             item.profit = ((item.rprice - result.ask_cny)/result.ask_cny*100).toFixed(2) + '%';
             item.currency = ads.currency;
             item.range = ads.min_amount + '-' + ads.max_amount_available;
-            result.lbc_buy_list.push(item);
+            if (!(item.username in _prev_name_list) && ads.max_amount_available > ads.min_amount) {
+              _count += 1;
+              result.lbc_buy_list.push(item);
 
+            }
+            if (_count>=show_count) {break;}
+
+            _prev_name_list[item.username] = 1;
         }
 
     });
@@ -125,17 +137,31 @@ function update_lbc_sell() {
 
         result.lbc_sell_list = [];
 
-        for (var i = 0; i < Math.min(6,ad_list.length); i++) {
+        _count=0;
+        _prev_name_list = {};
+
+        for (var i = 0; i < ad_list.length; i++) {
             ads = ad_list[i].data;
             item = {};
             item.username = ads.profile.username;
+           
             item.method = ads.online_provider;
             item.price = ads.temp_price;
             item.rprice = (ads.temp_price*1.01).toFixed(2);
             item.profit = ((result.bid_cny - item.rprice)/result.bid_cny*100).toFixed(2) + '%';
             item.currency = ads.currency;
             item.range = ads.min_amount + '-' + ads.max_amount_available;
-            result.lbc_sell_list.push(item);
+
+            if (!(item.username in _prev_name_list) && ads.max_amount_available > ads.min_amount) {
+              _count += 1;
+              result.lbc_sell_list.push(item);
+
+            }
+            if (_count>=show_count) {break;}
+
+             _prev_name_list[item.username] = 1;
+
+
 
         }
 
