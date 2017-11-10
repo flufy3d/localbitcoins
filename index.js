@@ -103,7 +103,7 @@ function update_lbc_buy() {
             item.profit = ((item.rprice - result.ask_cny)/result.ask_cny*100).toFixed(2) + '%';
             item.currency = ads.currency;
             item.range = ads.min_amount + '-' + ads.max_amount_available;
-            if (!(item.username in _prev_name_list) && ads.max_amount_available > ads.min_amount) {
+            if (!(item.username in _prev_name_list) && ads.max_amount_available > ads.min_amount && ads.currency == 'CNY') {
               _count += 1;
               result.lbc_buy_list.push(item);
 
@@ -152,7 +152,7 @@ function update_lbc_sell() {
             item.currency = ads.currency;
             item.range = ads.min_amount + '-' + ads.max_amount_available;
 
-            if (!(item.username in _prev_name_list) && ads.max_amount_available > ads.min_amount) {
+            if (!(item.username in _prev_name_list) && ads.max_amount_available > ads.min_amount && ads.currency == 'CNY') {
               _count += 1;
               result.lbc_sell_list.push(item);
 
